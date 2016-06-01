@@ -6,10 +6,7 @@ var board = new five.Board();
 var screenWidth = robot.getScreenSize().width;
 var screenHeight = robot.getScreenSize().height;
 
-var mouseX = (screenWidth)/2;
-var mouseY = (screenHeight)/2;
-
-robot.moveMouse(mouseX, mouseY);
+robot.moveMouse(screenWidth/2, screenHeight/2);
 
 board.on("ready", function() {
   var imu = new five.IMU({
@@ -18,46 +15,17 @@ board.on("ready", function() {
 
   imu.on("change", function() {
 
-    var yawAngle = this.gyro.yaw.angle; // x angle
-    var pitchAngle = this.gyro.pitch.angle; // y angle
+    var acc = this.accelerometer.acceleration*10;
+    var acc_x = (this.accelerometer.y*100);
+    var acc_y = (this.accelerometer.x*100);
 
-    // if the mouse position has changed get to the new position
-    if (mouseX != robot.getMousePos().x || mouseY != robot.getMousePos().y) {
-      mouseX = robot.getMousePos().x;
-      mouseY = robot.getMousePos().y;
-      robot.moveMouse(mouseX, mouseY);
+    if (acc_x > 10 || acc_x < -10) {
+      robot.moveMouse(robot.getMousePos().x+acc_x, robot.getMousePos().y);
+    }
+    if (acc_y > 20 || acc_y < -20) {
+      robot.moveMouse(robot.getMousePos().x, robot.getMousePos().y+acc_y);
     }
 
-    // if it's not outside the screen margins
-    if(mouseX > 0 && mouseX < screenWidth) {
-      // if yawAngle is positive move right
-      // if yawAngle is negative move left
-      if (yawAngle*-1 > 10) {
-        // move only if it doesn't get stuck in a margin
-        if ((mouseX + 1)<screenWidth) mouseX += 1;
-        robot.moveMouse(mouseX, mouseY);
-      } else if (yawAngle > 10) {
-        // move only if it doesn't get stuck in a margin
-        if ((mouseX - 1)>0) mouseX -= 1;
-        robot.moveMouse(mouseX, mouseY);
-      }
-    }
-
-    // if it's not outside the screen margins
-    if(mouseY > 0 && mouseY < screenHeight) {
-      // if pitchAngle is positive move right
-      // if pitchAngle is negative move left
-      if (pitchAngle > 10) {
-        // move only if it doesn't get stuck in a margin
-        if ((mouseY + 1)<screenHeight) mouseY += 1;
-        robot.moveMouse(mouseX, mouseY);
-      } else if (pitchAngle*-1 > 10) {
-        // move only if it doesn't get stuck in a margin
-        if ((mouseY - 1)>0) mouseY -= 1;
-        robot.moveMouse(mouseX, mouseY);
-      }
-    }
-
-    console.log(mouseX + " " + mouseY + " " + yawAngle + " " + pitchAngle);
+    console.log(robot.getMousePos().x + " " + robot.getMousePos().y + " " + acc + " " + acc_x + " " + acc_y);
   });
 });
