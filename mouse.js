@@ -6,6 +6,9 @@ var board = new five.Board();
 var screenWidth = robot.getScreenSize().width;
 var screenHeight = robot.getScreenSize().height;
 
+var date1 = 0;
+var date2 = 0;
+
 robot.moveMouse(screenWidth/2, screenHeight/2);
 
 board.on("ready", function() {
@@ -16,16 +19,21 @@ board.on("ready", function() {
   imu.on("change", function() {
 
     var acc = this.accelerometer.acceleration*10;
-    var acc_x = (this.accelerometer.y*100);
+    var acc_x = ((this.accelerometer.y + 0.035)*100);
     var acc_y = (this.accelerometer.x*100);
 
-    if (acc_x > 10 || acc_x < -10) {
-      robot.moveMouse(robot.getMousePos().x+acc_x, robot.getMousePos().y);
-    }
-    if (acc_y > 20 || acc_y < -20) {
-      robot.moveMouse(robot.getMousePos().x, robot.getMousePos().y+acc_y);
+    date1 = date2;
+    date2 = new Date().getSeconds() + new Date().getMilliseconds()*0.001;
+
+    var dx = acc_x * Math.pow(date2 - date1, 2) * 100;
+    var dy = acc_y * Math.pow(date2 - date1, 2) * -100;
+
+    dx = (dx*(screenWidth/2))/30;
+    dy = (dy*(screenHeight/2))/30;
+
+    if (acc > 10) {
+      robot.moveMouse(robot.getMousePos().x+dx, robot.getMousePos().y+dy);
     }
 
-    console.log(robot.getMousePos().x + " " + robot.getMousePos().y + " " + acc + " " + acc_x + " " + acc_y);
   });
 });
