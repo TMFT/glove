@@ -8,8 +8,6 @@ var screenHeight = robot.getScreenSize().height;
 
 var date1 = 0;
 var date2 = 0;
-var accelPitch1;
-var accelPitch2;
 
 robot.moveMouse(screenWidth/2, screenHeight/2);
 
