@@ -58,6 +58,14 @@ board.on("ready", function() {
       robot.mouseToggle("up","left");
       click = false;
     }
+    if (this.z < 0 && accelerometerD.z < 0 && this.z - intervalo < accelerometerD.z && this.z + intervalo < accelerometerD.z && keyToggled == false) {
+        robot.mouseToggle("e", "down");
+        keyToggled == true;
+      }
+    if (this.z > 0 && accelerometerD.z > 0 && this.z + intervalo > accelerometerD.z && keyToggled == true) {
+      robot.mouseToggle("e", "up");
+      keyToggled == false;
+    }
   });
   accelerometerD.on("change", function() {
     var intervalo = 0.5;
@@ -68,6 +76,14 @@ board.on("ready", function() {
     if (this.z + intervalo > accelerometerE.z && click == true) {
       robot.mouseToggle("up","right");
       click = false;
+    }
+    if (this.z < 0 && accelerometerD.z < 0 && this.z - intervalo < accelerometerD.z && this.z + intervalo < accelerometerD.z && keyToggled == false) {
+        robot.mouseToggle("e", "down");
+        keyToggled == true;
+      }
+    if (this.z > 0 && accelerometerD.z > 0 && this.z + intervalo > accelerometerD.z && keyToggled == true) {
+      robot.mouseToggle("e", "up");
+      keyToggled == false;
     }
   });
 });
