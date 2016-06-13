@@ -44,28 +44,28 @@ board.on("ready", function() {
     if (acc > 10) {
       robot.moveMouse(robot.getMousePos().x+dx, robot.getMousePos().y+dy);
     }
-    //console.log(robot.getMousePos().x,robot.getMousePos().y,dx,dy);
   });
-var click = false;
+
+  var click = false;
+  var keyToggled = false;
   accelerometerE.on("change", function() {
-    accelPitch1 = this.z;
-    if (accelPitch1<0 && click == false) {
+    var intervalo = 0.5;
+    if (this.z - intervalo < accelerometerD.z && this.z + intervalo < accelerometerD.z && click == false) {
       robot.mouseToggle("down","left");
       click = true;
     }
-    if (accelPitch1>0.30 && click == true) {
+    if (this.z + intervalo > accelerometerD.z && click == true) {
       robot.mouseToggle("up","left");
       click = false;
     }
-    console.log(accelPitch1,accelPitch2)
   });
   accelerometerD.on("change", function() {
-    accelPitch2 = this.z;
-    if (accelPitch2<0 && click == false) {
+    var intervalo = 0.5;
+    if (this.z - intervalo < accelerometerE.z && this.z + intervalo < accelerometerE.z && click == false) {
       robot.mouseToggle("down","right");
       click = true;
     }
-    if (accelPitch2>0.30 && click == true) {
+    if (this.z + intervalo > accelerometerE.z && click == true) {
       robot.mouseToggle("up","right");
       click = false;
     }
