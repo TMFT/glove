@@ -40,48 +40,38 @@ board.on("ready", function() {
     dy = (dy*(screenHeight/2))/0.5;
 
     if (acc > 10) {
-      robot.moveMouse(robot.getMousePos().x+dx, robot.getMousePos().y+dy);
+      //robot.moveMouse(robot.getMousePos().x+dx, robot.getMousePos().y+dy);
     }
   });
 
   var click = false;
   var keyToggled = false;
   accelerometerE.on("change", function() {
-    var intervalo = 0.5;
-    if (this.z - intervalo < accelerometerD.z && this.z + intervalo < accelerometerD.z && click == false) {
+    if (this.roll < 0 && accelerometerD.z > 0 && click == false) {
       robot.mouseToggle("down","left");
       click = true;
     }
-    if (this.z + intervalo > accelerometerD.z && click == true) {
+    if (this.roll > 0 && accelerometerD.z > 0 && click == true) {
       robot.mouseToggle("up","left");
       click = false;
     }
-    if (this.z < 0 && accelerometerD.z < 0 && this.z - intervalo < accelerometerD.z && this.z + intervalo < accelerometerD.z && keyToggled == false) {
-        robot.mouseToggle("e", "down");
-        keyToggled == true;
-      }
-    if (this.z > 0 && accelerometerD.z > 0 && this.z + intervalo > accelerometerD.z && keyToggled == true) {
-      robot.mouseToggle("e", "up");
-      keyToggled == false;
+    if (this.roll < 0 && accelerometerD.roll < 0 && keyToggled == false) {
+      robot.keyTap("e");
+      keyToggled = true;
+    }
+    if (this.roll > 0 && accelerometerD.roll > 0 && keyToggled == true) {
+      robot.keyTap("e");
+      keyToggled = false;
     }
   });
   accelerometerD.on("change", function() {
-    var intervalo = 0.5;
-    if (this.z - intervalo < accelerometerE.z && this.z + intervalo < accelerometerE.z && click == false) {
+    if (this.roll < 0 && accelerometerE.z > 0 && click == false) {
       robot.mouseToggle("down","right");
       click = true;
     }
-    if (this.z + intervalo > accelerometerE.z && click == true) {
+    if (this.roll > 0 && accelerometerE.z > 0 && click == true) {
       robot.mouseToggle("up","right");
       click = false;
-    }
-    if (this.z < 0 && accelerometerD.z < 0 && this.z - intervalo < accelerometerD.z && this.z + intervalo < accelerometerD.z && keyToggled == false) {
-        robot.mouseToggle("e", "down");
-        keyToggled == true;
-      }
-    if (this.z > 0 && accelerometerD.z > 0 && this.z + intervalo > accelerometerD.z && keyToggled == true) {
-      robot.mouseToggle("e", "up");
-      keyToggled == false;
     }
   });
 });
