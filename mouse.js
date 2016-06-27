@@ -26,22 +26,23 @@ board.on("ready", function() {
 
   imu.on("change", function() {
 
-    var acc = this.accelerometer.acceleration*10;
-    var acc_x = this.accelerometer.y*100;
-    var acc_y = this.accelerometer.x*-100;
+    var acc = 10;
 
-    date1 = date2;
-    date2 = new Date().getSeconds() + new Date().getMilliseconds()*0.001;
+    console.log(this.gyro.rate.x, this.gyro.rate.y);
 
-    var dx = acc_x * Math.pow(date2 - date1, 2);
-    var dy = acc_y * Math.pow(date2 - date1, 2);
-
-    dx = (dx*(screenWidth/2))/0.5;
-    dy = (dy*(screenHeight/2))/0.5;
-
-    if (acc > 10) {
-      //robot.moveMouse(robot.getMousePos().x+dx, robot.getMousePos().y+dy);
+    if (this.gyro.rate.x > 15) {
+      robot.moveMouse(robot.getMousePos().x+acc, robot.getMousePos().y);
     }
+    else if (this.gyro.rate.x < -15) {
+      robot.moveMouse(robot.getMousePos().x-acc, robot.getMousePos().y);
+    }
+    else if (this.gyro.rate.y > 25) {
+      robot.moveMouse(robot.getMousePos().x, robot.getMousePos().y+acc);
+    }
+    else if (this.gyro.rate.y < -25) {
+      robot.moveMouse(robot.getMousePos().x, robot.getMousePos().y-acc);
+    }
+
   });
 
   var click = false;
@@ -74,4 +75,5 @@ board.on("ready", function() {
       click = false;
     }
   });
+
 });
