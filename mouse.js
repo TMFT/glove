@@ -28,23 +28,24 @@ board.on("ready", function() {
 
     var acc = 10;
 
-    console.log(this.gyro.rate.x, this.gyro.rate.y);
+    console.log(this.gyro.roll.angle, this.gyro.pitch.angle);
 
-    if (this.gyro.rate.x > 15) {
+    if (this.gyro.roll.angle > 10) {
       robot.moveMouse(robot.getMousePos().x+acc, robot.getMousePos().y);
     }
-    else if (this.gyro.rate.x < -15) {
+    else if (this.gyro.roll.angle < -5) {
       robot.moveMouse(robot.getMousePos().x-acc, robot.getMousePos().y);
     }
-    else if (this.gyro.rate.y > 25) {
+
+    if (this.gyro.pitch.angle > 10) {
       robot.moveMouse(robot.getMousePos().x, robot.getMousePos().y+acc);
     }
-    else if (this.gyro.rate.y < -25) {
+    else if (this.gyro.pitch.angle < -5) {
       robot.moveMouse(robot.getMousePos().x, robot.getMousePos().y-acc);
     }
 
   });
-
+/*
   var click = false;
   var keyToggled = false;
   accelerometerE.on("change", function() {
@@ -75,5 +76,5 @@ board.on("ready", function() {
       click = false;
     }
   });
-
+*/
 });
