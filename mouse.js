@@ -45,7 +45,7 @@ board.on("ready", function() {
     }
 
   });
-/*
+
   var click = false;
   var keyToggled = false;
   accelerometerE.on("change", function() {
@@ -76,5 +76,5 @@ board.on("ready", function() {
       click = false;
     }
   });
-*/
+
 });
